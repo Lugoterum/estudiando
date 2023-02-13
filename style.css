@@ -1,0 +1,164 @@
+
+/*          STEFFANI AGUILAR            */
+
+/* En CSS se trabaja básicamente con dos cosas que se especifican dentro de las llaves... PROPIEDADES (como el color o el tamaño) y VALORES de esas propiedades (como el color escogido, el ancho y largo determinado en pixeles - entre otros)
+
+PARA VER PROPIEDADES DISPONIBLES EN CSS...  cssreference.io 
+
+PARA VER COLORES para CSS... htmlcolorcodes.com/es/ 
+
+Se puede ajustar el ancho y el alto mediante la rueda del mouse o las flechas del teclado estando en el inspector de la consola y se va viendo hasta donde es necesario, luego se copia ese valor en el archivo CSS
+
+En CSS hay muchos tipos de visualizacion o de DISPLAY, pero los mas usados son DISPLAY BLOCK  -  DISPLAY INLINE  y  DISPLAY INLINE-BLOCK, básicamente son los espacios que ocupan los elementos en la página. DISPLAY BLOCK ocupa todo el espacio de la linea de izquierda a derecha, DISPLAY INLINE ocupa sólo una parte del espacio en la linea, ese espacio viene determinado por defecto pero se puede modificar 
+El tipo de visualizacion de las h(1,2,3...) es BLOCK
+
+El tipo de visualizacion de los LABEL es INLINE, no asume los valores de alto y ancho
+
+El tipo de visualizacion de los INPUT y los BUTTON es INLINE-BLOCK es decir que tiene caracteristicas de ambas, se ubica uno al lado del otro, pero le podemos cambiar el alto y ancho */
+
+@import url('https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Fredoka+One&display=swap');
+
+body {
+	font-family: 'Fredoka One', cursive;
+	background-color: gold;
+}
+
+#seleccionar-mascota {
+	display: flex;
+	flex-direction:column;
+	justify-content:center;
+	align-items:center;
+}
+
+.titulo {
+	/* width: 380px;
+	height: 80px;
+	padding: 10px;
+	border-radius: 15px;
+	border-style: solid;
+	border-color: darkgoldenrod;
+	background-color: khaki;*/
+	font-family: 'Bungee Spice', cursive;
+	font-size: 48px;
+}
+
+.subtitulo {
+	font-size: 32px;
+	font-family: 'Fredoka One', cursive;
+
+}
+
+.tarjetas, .tarjetas-ataques {
+	display: flex;  /* Para que coloque las mascotas una al lado de la otra horizontal*/
+
+	gap: 10px; /* para espaciar las mascotas  */
+} 
+
+.tarjeta-de-mokepon {
+    width: 110px;
+	height: 80px;
+	padding: 10px;
+	border-radius: 10px;
+	border: 2px solid red;
+	background-color: lightgray;
+	box-sizing: border-box;
+	margin: 30px; 
+	font-family: fantasy;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	cursor: pointer;
+}
+
+.tarjeta-de-mokepon img {
+	width: 40px;
+} 
+
+#boton-mascota {
+	width: 180px;
+	height: 40px;
+	border-radius: 20px;
+	background-color:khaki;
+	border: 2px solid red;
+	color: black;
+	font-family: 'Fredoka One', cursive;
+	cursor: pointer;
+}
+
+input {
+	display: none; 
+}  
+
+input:checked + label {
+	background-color: chartreuse;
+}
+#seleccionar-ataque {
+	/*  display: flex;  No es necesario colocarlo en CSS porque ya está especificado en JS  */
+	flex-direction: column;
+	align-items: center;
+}
+
+.boton-de-ataque {
+	background-color: navajowhite;
+	padding: 10px;
+	border-radius: 10px;
+	border: 2px solid red;
+	box-sizing: border-box;
+	width: 80px;
+	height: 40px;
+	font-family: 'Fredoka One', cursive;
+	cursor: pointer;
+}
+
+#mensajes {
+	width: 280px;
+	background-color:paleturquoise;
+	padding: 20px;
+	margin-top: 20px;
+	border-radius: 10px;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+
+#boton-reiniciar {
+	border:cornsilk;
+	color:darkblue;
+	font-family: 'Fredoka One', cursive;
+	width: 180px;
+	height: 30px;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+.ataques {
+	display: grid;
+	grid-template-columns: 100px 100px;
+}
+
+.ataques-jugador, .ataques-enemigo {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+	/* CANVAS  */
+
+#ver-mapa {
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+#mapa {
+	border: 2px solid white;
+}
+
+@media (max-width: 360px) {
+	.tarjetas, .tarjetas-ataques{
+		flex-direction: column;
+	}
+}
+/* Esta instrucción es para cuando se ve en dispositivos de pantalla pequeña como celulares, se le dice que cuando el dispositivo tenga de 0 a 360 px, haga el cambio que se le dice, se coloca SÓLO lo que debe cambiar, en este caso, que las mascotas se organien vertical */
+
+	
