@@ -29,7 +29,7 @@ const ataqueDelEnemigo = document.getElementById('ataque-del-enemigo')
 
 const sectionMensajes = document.getElementById('resultado')
 
-/*  CANVAS   */
+// CANVAS   
 const sectionVerMapa = document.getElementById('ver-mapa')  // Titulo
 const mapa = document.getElementById('mapa')  // canvas
 
@@ -53,8 +53,10 @@ let victoriasJugador = 0
 let victoriasEnemigo = 0
 let vidasJugador = 3
 let vidasEnemigo = 3
+let intervalo
+let mapaBackground = new Image()
 
-let lienzo = mapa.getContext('2d') // Permite crear dentro del canvas
+let lienzo = mapa.getContext("2d") // Permite crear dentro del canvas
 
 /* Hay dos clases de objetos: OBJETOS INSTANCIA que se construyen utilizando una clase (CLASS) 
 OBJETOS LITERALES se construyen sin clases, sólo guardan información  */
@@ -65,6 +67,15 @@ class Mokepon {
         this.foto = foto
         this.vida = vida
         this.ataques = []   /*Los corchetes dicen que es un arreglo (array) y se puede definir despues */
+        this.x = 20
+        this.y = 30
+        this.ancho = 80
+        this.alto = 80
+        this.mapaFoto = new Image()
+        this.mapaFoto.src = foto
+        this.velocidadX = 0
+        this.velocidadY = 0
+
     }
 }
     /* Los que siguen son los objetos de la clase que acabamos de crear (Mokepon),los nombres se comienzan siempre con Mayúscula. */ 
@@ -100,8 +111,10 @@ raty.ataques.push(
 mascotas.push(hipo, capy, raty) 
 /* Con esta instruccion adicionamos objetos LITERALES que componen el arreglo mascotas(pueden ser 3 o 2.000). Para agregarle alguno despues, sólo se adiciona la coma y el nombre */
 
-function iniciarJuego() {   
+    // 2 - por aparicion
 
+function iniciarJuego() {   
+    
     sectionSeleccionarAtaque.style.display = 'none'
     sectionVerMapa.style.display = 'none'
 
@@ -109,12 +122,11 @@ function iniciarJuego() {
    
     mascotas.forEach((mokepon) => {       
         opcionDeMokepones = `
-         <input type='radio' name='mascota' id=${mokepon.nombre} />
+         <input type='radio' name='mascota' id=${mokepon.nombre}/>
         <label class='tarjeta-de-mokepon' for=${mokepon.nombre}>
             <p>${mokepon.nombre}</p>
             <img src=${mokepon.foto} alt=${mokepon.nombre}>
-        </label>
-        
+        </label>      
         `
         contenedorTarjetas.innerHTML += opcionDeMokepones
     
@@ -126,27 +138,32 @@ function iniciarJuego() {
         
     })
     
-    sectionReiniciar.style.display = 'none'
-    botonMascotaJugador.addEventListener('click', seleccionarMascotaJugador)   
+    //sectionReiniciar.style.display = 'none'
+    botonMascotaJugador.addEventListener('click', seleccionarMascotaJugador) 
+    
     botonReiniciar.addEventListener('click',reiniciarJuego)
 }
+    // 3 -  por aparicion
 
 function seleccionarMascotaJugador() {
-
+    
     sectionSeleccionarMascota.style.display = 'none'
     //sectionSeleccionarAtaque.style.display = 'flex'
-    sectionVerMapa.style.display = 'flex' // Muestra canvas
+
+    /*
     let imagenDeHipo = new Image()
-    imagenDeHipo.src = hipo.foto
+    imagenDeHipo.src = hipo.foto    
+    
     lienzo.drawImage(
+        mostrar la mascota en el canvas
         imagenDeHipo,
         20,
         25,
         80,
         100
-    )
-
-    /*  lienzo.fillRect(5, 15, 20, 40)  Dentro de canvas crea un rectangulo (fillRect) en la posición 5(X) 15(Y) 20 (ancho) 40(alto)  */
+    )  */
+/*
+     lienzo.fillRect(5, 15, 20, 40)  Dentro de canvas crea un rectangulo (fillRect) en la posición 5(X) 15(Y) 20 (ancho) 40(alto)  */
     
 
     /*  En el siguiente loop :
@@ -174,7 +191,12 @@ function seleccionarMascotaJugador() {
     botonMascotaJugador.disable = true
     /* Con esta instruccion se desabilita el boton de elegir mascota (hasta la proxima eleccion) para que no la pueda cambiar */
 
+    
+
     extraerAtaques(mascotaJugador) // Lleva el nombre de la mascota escogida
+    sectionVerMapa.style.display = 'flex' // Muestra canvas
+    iniciarMapa()
+    seleccionarMascotaEnemigo()
 }
 
 function extraerAtaques(mascotaJugador) {
@@ -194,6 +216,7 @@ function extraerAtaques(mascotaJugador) {
 }
 
 function mostrarAtaques(ataques) {
+    
     ataques.forEach((ataque) => {
         ataquesMokepon = `
         <button id= ${ataque.id} class="boton-de-ataque BAtaque">${ataque.nombre}</button>
@@ -252,8 +275,11 @@ function secuenciaAtaque() {
   })
 }
     seleccionarMascotaEnemigo()
+    
+    //  1 - por aparicion
 
 function seleccionarMascotaEnemigo() {
+    
     let mascotaAleatoria = aleatorio(0, mascotas.length - 1)
 
     /* Se le está diciendo que asuma la longitud del arreglo mascotas (la cantidad de objetos y le reste 1 porque empieza en 0), para escoger un numero y definir que mascota tiene el enemigo  */
@@ -333,7 +359,7 @@ function indexAmbosOponentes(jugador, enemigo) {
     /* Esta función, indexAmbosOponentes, lo único que hace es traer el número de ataque en cada selección tanto del jugador como del enemigo (los toma de la función combate), guarda cada uno en una variable, trayendo el ataque que corresponde a la elección, para mostrarlo después       */
 
 function combate() {
-
+    
     for (let index = 0; index < ataqueJugador.length; index++) {
         if (ataqueJugador[index] === ataqueEnemigo[index]) {
             indexAmbosOponentes(index, index)
@@ -414,7 +440,8 @@ function crearMensajeFinal(resultadoFinal) {
     se utiliza para desabilitarlos cuando hubo un ganador */   
 }
 
-function reiniciarJuego(){   
+function reiniciarJuego() {   
+    
     document.getElementById('Hipo').checked = false;
     document.getElementById('Capy').checked = false;
     document.getElementById('Raty').checked = false;  
@@ -425,9 +452,115 @@ function reiniciarJuego(){
 function aleatorio(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
-    /* Con esta funcion (aleatorio), el programa escoge aleatoriamente la mascota y el ataque del enemigo */
+/* Con esta funcion (aleatorio), el programa escoge aleatoriamente la mascota y el ataque del enemigo */
+   
+
+/* Las siguientes instrucciones son para mover la mascota un punto cada vez:
+
+function pintarPersonaje() {
+    lienzo.clearRect(0, 0, mapa.width, mapa.height) // limpia la posicion anterior cada vez que se mueve
+    lienzo.drawImage(
+        // mostrar la mascota en el canvas
+        hipo.mapaFoto,
+        hipo.x,
+        hipo.y,
+        hipo.ancho,
+        hipo.alto   
+    )
+}   
+
+function moverDerecha() {
+    hipo.x = hipo.x + 5 // mueve 5 px
+    pintarPersonaje()
+}
+
+function moverIzquierda() {
+    hipo.x = hipo.x - 5 
+    pintarPersonaje()
+}
+
+function moverAbajo() {
+    hipo.y = hipo.y + 5 
+    pintarPersonaje()
+}
+
+function moverArriba() {
+    hipo.y = hipo.y - 5 
+    pintarPersonaje()
+}
+*/
+
+function pintarPersonaje() {
+    hipo.x = hipo.x + hipo.velocidadX
+    hipo.y = hipo.y + hipo.velocidadY
+    lienzo.clearRect(0, 0, mapa.width, mapa.height)
+    lienzo.drawImage(
+        // mostrar la mascota en el canvas
+        hipo.mapaFoto,
+        hipo.x,
+        hipo.y,
+        hipo.ancho,
+        hipo.alto
+    )
+}
+
+function moverDerecha() {
+    hipo.velocidadX = 5 // se mueve continuamente,cada de a 5 px
+}
+
+function moverIzquierda() {
+    hipo.velocidadX = - 5
+}
+
+function moverAbajo() {
+    hipo.velocidadY = 5
+}
+
+function moverArriba() {
+    hipo.velocidadY = - 5
+}
+
+function detenerMovimiento() {
+    hipo.velocidadX = 0
+    hipo.velocidadY = 0
+}
+
+// Moverlo también con las teclas
+function teclaPresionada(event) {  // nos trae qué tecla se presionó
+    console.log(event.key)
+    switch (event.key) {
+        case 'ArrowUp':
+            moverArriba()
+            break
+        case 'ArrowDown':
+            moverAbajo()
+            break
+        case 'ArrowLeft':
+            moverIzquierda()
+            break
+        case 'ArrowRight':
+            moverDerecha()
+            break
+        default:
+            break
+    }
+}
+
+/* SWITCH es igual a hacer varios if seguidos, se da lo que se va a comparar (event.key - informacion que viene del  window.addEventListener(keydown, teclaPresionada) nos trae qué tecla se presionó y la compara con cada caso, si es igual, el break termina la comparación, si no, sigue comparando, al final, si no se ha igualado ningun caso, viene el default, que en este ejemplo, no hace nada.  */
+
+mapaBackground.src= './campoBatalla.jpg'
+function iniciarMapa() {
+    mapa.width = 600
+    mapa.height = 400
+    intervalo = setInterval(pintarPersonaje, 50) // va limpiando las posiciones anteriores
+    // Llama una función (pintarPersonaje) cada cierto tiempo (50 milisegundos)
+ 
+    window.addEventListener('keydown', teclaPresionada)
+    window.addEventListener('keyup', detenerMovimiento)
+}
 
 window.addEventListener('load', iniciarJuego)
+
 
 /* Cuando el navegador termina de leer el codigo HTML, por esta instruccion, se dispara " iniciar juego" */
     

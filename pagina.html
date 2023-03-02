@@ -42,7 +42,22 @@
     <section id="ver-mapa">
       <h2 class="titulo">Recorre el mapa con tu mascota</h2>
       <canvas id="mapa"></canvas>
+      <button onmouseup = "detenerMovimiento()" onmousedown ="moverArriba()" >Arriba</button>
+      <button onmouseup = "detenerMovimiento()" onmousedown ="moverIzquierda()" >Izquierda</button>
+      <button onmouseup = "detenerMovimiento()" onmousedown ="moverAbajo()" >Abajo</button>
+      <button onmouseup = "detenerMovimiento()" onmousedown ="moverDerecha()" >Derecha</button>
     </section>
+    
+    <!-- Cuando utilizamos: 
+      button onClick = "mover" 
+      Estamos haciendo un solo movimiento (en X o en Y) cada vez que damos click
+
+      button onmousedown = "moverAbajo"
+      Estamos haciendo movimiento continuo teniendo presionado el botón
+
+      button onmouseup = "detenerMovimiento"
+      Estamos parando el movimiento realizado
+
       
     <!--  TERMINA CANVAS-->
 
