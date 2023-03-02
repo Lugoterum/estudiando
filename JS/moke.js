@@ -55,6 +55,7 @@ let vidasJugador = 3
 let vidasEnemigo = 3
 let intervalo
 let mapaBackground = new Image()
+mapaBackground.src = './CampoBatalla.jpg'
 
 let lienzo = mapa.getContext("2d") // Permite crear dentro del canvas
 
@@ -148,6 +149,11 @@ function iniciarJuego() {
 function seleccionarMascotaJugador() {
     
     sectionSeleccionarMascota.style.display = 'none'
+
+    sectionVerMapa.style.display = 'flex' // Muestra canvas
+
+    iniciarMapa()
+
     //sectionSeleccionarAtaque.style.display = 'flex'
 
     /*
@@ -194,7 +200,7 @@ function seleccionarMascotaJugador() {
     
 
     extraerAtaques(mascotaJugador) // Lleva el nombre de la mascota escogida
-    sectionVerMapa.style.display = 'flex' // Muestra canvas
+    
     iniciarMapa()
     seleccionarMascotaEnemigo()
 }
@@ -490,10 +496,18 @@ function moverArriba() {
 }
 */
 
-function pintarPersonaje() {
+function pintarAmbiente() {
     hipo.x = hipo.x + hipo.velocidadX
     hipo.y = hipo.y + hipo.velocidadY
     lienzo.clearRect(0, 0, mapa.width, mapa.height)
+    lienzo.drawImage(
+        mapaBackground,
+        0,
+        0,
+        mapa.width,
+        mapa.height
+    )
+
     lienzo.drawImage(
         // mostrar la mascota en el canvas
         hipo.mapaFoto,
@@ -527,7 +541,6 @@ function detenerMovimiento() {
 
 // Moverlo también con las teclas
 function teclaPresionada(event) {  // nos trae qué tecla se presionó
-    console.log(event.key)
     switch (event.key) {
         case 'ArrowUp':
             moverArriba()
@@ -548,11 +561,11 @@ function teclaPresionada(event) {  // nos trae qué tecla se presionó
 
 /* SWITCH es igual a hacer varios if seguidos, se da lo que se va a comparar (event.key - informacion que viene del  window.addEventListener(keydown, teclaPresionada) nos trae qué tecla se presionó y la compara con cada caso, si es igual, el break termina la comparación, si no, sigue comparando, al final, si no se ha igualado ningun caso, viene el default, que en este ejemplo, no hace nada.  */
 
-mapaBackground.src= './campoBatalla.jpg'
 function iniciarMapa() {
-    mapa.width = 600
+    mapa.width = 1000
     mapa.height = 400
-    intervalo = setInterval(pintarPersonaje, 50) // va limpiando las posiciones anteriores
+    
+    intervalo = setInterval(pintarAmbiente, 50) // va limpiando las posiciones anteriores
     // Llama una función (pintarPersonaje) cada cierto tiempo (50 milisegundos)
  
     window.addEventListener('keydown', teclaPresionada)
