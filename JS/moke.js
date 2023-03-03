@@ -124,21 +124,21 @@ function iniciarJuego() {
    
     mascotas.forEach((mokepon) => {       
         opcionDeMokepones = `
-         <input type='radio' name='mascota' id=${mokepon.nombre}/>
-        <label class='tarjeta-de-mokepon' for=${mokepon.nombre}>
+         <input type='radio' name='mascota' id='${mokepon.nombre}'/>
+        <label class='tarjeta-de-mokepon' for='${mokepon.nombre}'>
             <p>${mokepon.nombre}</p>
-            <img src=${mokepon.foto} alt=${mokepon.nombre}>
+            <img src='${mokepon.foto}' alt='${mokepon.nombre}'>
         </label>      
         `
         contenedorTarjetas.innerHTML += opcionDeMokepones
     
         /* Como ya se crearon los botones de mascotas, ya se pueden ligar a los id y utilizarlos  */
-
+    })
           inputHipo = document.getElementById('Hipo')
           inputCapy = document.getElementById('Capy')
           inputRaty = document.getElementById('Raty') 
         
-    })
+    
     
     //sectionReiniciar.style.display = 'none'
     botonMascotaJugador.addEventListener('click', seleccionarMascotaJugador) 
