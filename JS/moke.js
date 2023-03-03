@@ -39,6 +39,7 @@ let inputHipo
 let inputCapy
 let inputRaty
 let mascotaJugador
+let mascotaJugadorObjeto
 let ataquesMokepon
 let ataquesMokeponEnemigo
 let botonFuego
@@ -150,29 +151,25 @@ function seleccionarMascotaJugador() {
     
     sectionSeleccionarMascota.style.display = 'none'
 
-    sectionVerMapa.style.display = 'flex' // Muestra canvas
+     //sectionSeleccionarAtaque.style.display = 'flex'
 
-    iniciarMapa()
-
-    //sectionSeleccionarAtaque.style.display = 'flex'
-
-    /*
-    let imagenDeHipo = new Image()
-    imagenDeHipo.src = hipo.foto    
+     /*
+     let imagenDeHipo = new Image()
+     imagenDeHipo.src = hipo.foto    
     
-    lienzo.drawImage(
+     lienzo.drawImage(
         mostrar la mascota en el canvas
         imagenDeHipo,
         20,
         25,
         80,
         100
-    )  */
-/*
-     lienzo.fillRect(5, 15, 20, 40)  Dentro de canvas crea un rectangulo (fillRect) en la posición 5(X) 15(Y) 20 (ancho) 40(alto)  */
+     )  
+
+     lienzo.fillRect(5, 15, 20, 40)  Dentro de canvas crea un rectangulo (fillRect) en la posición 5(X) 15(Y) 20 (ancho) 40(alto)  
     
 
-    /*  En el siguiente loop :
+     En el siguiente loop :
         - se pregunta que input fue escogido
         - a la variable spanMascotaJugador le damos su id (que en este caso es el nombre)
         - y en la variable mascotaJugador guardamos ese nombre   */
@@ -200,6 +197,8 @@ function seleccionarMascotaJugador() {
     
 
     extraerAtaques(mascotaJugador) // Lleva el nombre de la mascota escogida
+
+    sectionVerMapa.style.display = 'flex' // Muestra canvas
     
     iniciarMapa()
     seleccionarMascotaEnemigo()
@@ -497,10 +496,11 @@ function moverArriba() {
 */
 
 function pintarAmbiente() {
-    hipo.x = hipo.x + hipo.velocidadX
-    hipo.y = hipo.y + hipo.velocidadY
+    mascotaJugadorObjeto.x = mascotaJugadorObjeto.x + mascotaJugadorObjeto.velocidadX
+    mascotaJugadorObjeto.y = mascotaJugadorObjeto.y + mascotaJugadorObjeto.velocidadY
     lienzo.clearRect(0, 0, mapa.width, mapa.height)
     lienzo.drawImage(
+        // Mostrar el mapa en el canvas
         mapaBackground,
         0,
         0,
@@ -510,33 +510,33 @@ function pintarAmbiente() {
 
     lienzo.drawImage(
         // mostrar la mascota en el canvas
-        hipo.mapaFoto,
-        hipo.x,
-        hipo.y,
-        hipo.ancho,
-        hipo.alto
+        mascotaJugadorObjeto.mapaFoto,
+        mascotaJugadorObjeto.x,
+        mascotaJugadorObjeto.y,
+        mascotaJugadorObjeto.ancho,
+        mascotaJugadorObjeto.alto
     )
 }
 
 function moverDerecha() {
-    hipo.velocidadX = 5 // se mueve continuamente,cada de a 5 px
+    mascotaJugadorObjeto.velocidadX = 5 // se mueve continuamente,cada de a 5 px
 }
 
 function moverIzquierda() {
-    hipo.velocidadX = - 5
+    mascotaJugadorObjeto.velocidadX = - 5
 }
 
 function moverAbajo() {
-    hipo.velocidadY = 5
+    mascotaJugadorObjeto.velocidadY = 5
 }
 
 function moverArriba() {
-    hipo.velocidadY = - 5
+    mascotaJugadorObjeto.velocidadY = - 5
 }
 
 function detenerMovimiento() {
-    hipo.velocidadX = 0
-    hipo.velocidadY = 0
+    mascotaJugadorObjeto.velocidadX = 0
+    mascotaJugadorObjeto.velocidadY = 0
 }
 
 // Moverlo también con las teclas
@@ -562,15 +562,29 @@ function teclaPresionada(event) {  // nos trae qué tecla se presionó
 /* SWITCH es igual a hacer varios if seguidos, se da lo que se va a comparar (event.key - informacion que viene del  window.addEventListener(keydown, teclaPresionada) nos trae qué tecla se presionó y la compara con cada caso, si es igual, el break termina la comparación, si no, sigue comparando, al final, si no se ha igualado ningun caso, viene el default, que en este ejemplo, no hace nada.  */
 
 function iniciarMapa() {
-    mapa.width = 1000
+    mapa.width = 1000   //Tamaño del canvas
     mapa.height = 400
-    
+
+    mascotaJugadorObjeto = obtenerObjetoMascota(mascotaJugador)
+
     intervalo = setInterval(pintarAmbiente, 50) // va limpiando las posiciones anteriores
-    // Llama una función (pintarPersonaje) cada cierto tiempo (50 milisegundos)
+    // Llama una función (pintarAmbiente) cada cierto tiempo (50 milisegundos)
  
     window.addEventListener('keydown', teclaPresionada)
     window.addEventListener('keyup', detenerMovimiento)
 }
+
+function obtenerObjetoMascota() {
+    for (let i = 0; i < mascotas.length; i++) {
+        if (mascotaJugador === mascotas[i].nombre) {
+            return mascotas[i]
+        }
+    }
+}
+
+/* En este ciclo (for):
+      Se recorre el arreglo mascotas buscando la que coincida con la seleccionada (en mascotaJugador) y regresamos ese objeto completo  en mascotas[i]
+        */
 
 window.addEventListener('load', iniciarJuego)
 
