@@ -60,32 +60,71 @@ mapaBackground.src = './CampoBatalla.jpg'
 
 let lienzo = mapa.getContext("2d") // Permite crear dentro del canvas
 
+/* El siguiente grupo de instrucciones es para acomodar el ancho del mapa al ancho de la pantalla  -  Si queremos un ancho fijo, no incluimos este grupo  */
+
+let alturaQueBuscamos
+let anchoDelMapa = window.innerWidth - 20
+// window.innerWidth nos devuelve el ancho de la pantalla  
+
+const anchoMaximoDelMapa = 550
+// Aunque la pantalla sea muy ancha, el mapa jamas tendrá mas de 550 px
+
+
+if (anchoDelMapa > anchoMaximoDelMapa)
+{
+    anchoDelMapa = anchoMaximoDelMapa - 20
+}  
+
+alturaQueBuscamos = anchoDelMapa * 600 / 800
+mapa.width = anchoDelMapa
+mapa.height = alturaQueBuscamos
+
+
 /* Hay dos clases de objetos: OBJETOS INSTANCIA que se construyen utilizando una clase (CLASS) 
 OBJETOS LITERALES se construyen sin clases, sólo guardan información  */
 
 class Mokepon {
-    constructor(nombre, foto, vida) {
+    constructor(nombre, foto, vida, fotoMapa, x = 10, y = 10) {
         this.nombre = nombre
         this.foto = foto
         this.vida = vida
         this.ataques = []   /*Los corchetes dicen que es un arreglo (array) y se puede definir despues */
-        this.x = 20
-        this.y = 30
+        this.x = x
+        this.y = y
         this.ancho = 80
         this.alto = 80
         this.mapaFoto = new Image()
-        this.mapaFoto.src = foto
+        this.mapaFoto.src = fotoMapa // Imagen mascotas
         this.velocidadX = 0
         this.velocidadY = 0
 
     }
+/* Los metodos de las clases
+Cuando el valor de una propiedad de un objeto es una función se le llama: método.
+
+El método, entonces, es una función que está asociada a un objeto. */
+    
+    pintarMokepon() {
+        lienzo.drawImage(
+            // mostrar la mascota en el canvas
+            this.mapaFoto,
+            this.x,
+            this.y,
+            this.ancho,
+            this.alto
+        )
+    }
 }
     /* Los que siguen son los objetos de la clase que acabamos de crear (Mokepon),los nombres se comienzan siempre con Mayúscula. */ 
-let hipo = new Mokepon('Hipo', './Hipo.jpg',3)
-let capy = new Mokepon('Capy', './Capy.jpg',5)
-let raty = new Mokepon('Raty', './Raty.jfif',3)
+let hipo = new Mokepon('Hipo', './Hipo.jpg', 3, './Hipocara.png')
+let capy = new Mokepon('Capy', './Capy.jpg', 3, './Capycara.png')
+let raty = new Mokepon('Raty', './Raty.jfif', 3, './Ratycara.png')
 
-// Ahora adicionamos objetos LITERALES para nuestro arreglo de ataques
+let hipoEnemigo = new Mokepon('Hipo', './Hipo.jpg', 3, './Hipocara.png', 80, 120)
+let capyEnemigo = new Mokepon('Capy', './Capy.jpg', 3, './Capycara.png', 200, 95)
+let ratyEnemigo = new Mokepon('Raty', './Raty.jfif', 3, './Ratycara.png', 300, 190)
+
+// Ahora adicionamos objetos LITERALES para arreglo de ataques Mascota
 hipo.ataques.push(
     { nombre: '💧', id: 'boton-agua' },
     { nombre: '💧', id: 'boton-agua' },
@@ -94,6 +133,17 @@ hipo.ataques.push(
     { nombre: '🌎', id: 'boton-tierra' },
     //Los emogis son texto, por eso se escriben entre ' '
 )
+
+// Ahora adicionamos objetos LITERALES para arreglo de ataques Enemigo
+hipoEnemigo.ataques.push(
+    { nombre: '💧', id: 'boton-agua' },
+    { nombre: '💧', id: 'boton-agua' },
+    { nombre: '💧', id: 'boton-agua' },
+    { nombre: '🔥', id: 'boton-fuego' },
+    { nombre: '🌎', id: 'boton-tierra' },
+    //Los emogis son texto, por eso se escriben entre ' '
+)
+
 capy.ataques.push(
     { nombre: '🌎', id: 'boton-tierra' },
     { nombre: '🌎', id: 'boton-tierra' },
@@ -101,6 +151,14 @@ capy.ataques.push(
     { nombre: '💧', id: 'boton-agua' },
     { nombre: '🔥', id: 'boton-fuego' }, 
 )
+capyEnemigo.ataques.push(
+    { nombre: '🌎', id: 'boton-tierra' },
+    { nombre: '🌎', id: 'boton-tierra' },
+    { nombre: '🌎', id: 'boton-tierra' },
+    { nombre: '💧', id: 'boton-agua' },
+    { nombre: '🔥', id: 'boton-fuego' }, 
+)
+
 raty.ataques.push(
     { nombre: '🔥', id: 'boton-fuego' },
     { nombre: '🔥', id: 'boton-fuego' },
@@ -108,7 +166,14 @@ raty.ataques.push(
     { nombre: '💧', id: 'boton-agua' },    
     { nombre: '🌎', id: 'boton-tierra' },
 )
-/*Estamos agregando una propiedad (que se llama ataque) a los objetos  */
+ratyEnemigo.ataques.push(
+    { nombre: '🔥', id: 'boton-fuego' },
+    { nombre: '🔥', id: 'boton-fuego' },
+    { nombre: '🔥', id: 'boton-fuego' },
+    { nombre: '💧', id: 'boton-agua' },    
+    { nombre: '🌎', id: 'boton-tierra' },
+)
+/*Estamos agregando(PUSH) una propiedad (que se llama ataque) a los objetos  */
 
 mascotas.push(hipo, capy, raty) 
 /* Con esta instruccion adicionamos objetos LITERALES que componen el arreglo mascotas(pueden ser 3 o 2.000). Para agregarle alguno despues, sólo se adiciona la coma y el nombre */
@@ -150,11 +215,8 @@ function iniciarJuego() {
 function seleccionarMascotaJugador() {
     
     sectionSeleccionarMascota.style.display = 'none'
-
-     //sectionSeleccionarAtaque.style.display = 'flex'
-
-     /*
-     let imagenDeHipo = new Image()
+     
+     /* let imagenDeHipo = new Image()
      imagenDeHipo.src = hipo.foto    
     
      lienzo.drawImage(
@@ -188,11 +250,12 @@ function seleccionarMascotaJugador() {
     }
     else {
         alert('Debes elegir una mascota')
-        return;
+        return
     }
-
+    /*
     botonMascotaJugador.disable = true
-    /* Con esta instruccion se desabilita el boton de elegir mascota (hasta la proxima eleccion) para que no la pueda cambiar */
+
+     Con esta instruccion se desabilita el boton de elegir mascota (hasta la proxima eleccion) para que no la pueda cambiar */
 
     
 
@@ -201,7 +264,6 @@ function seleccionarMascotaJugador() {
     sectionVerMapa.style.display = 'flex' // Muestra canvas
     
     iniciarMapa()
-    seleccionarMascotaEnemigo()
 }
 
 function extraerAtaques(mascotaJugador) {
@@ -248,8 +310,6 @@ function mostrarAtaques(ataques) {
       botonTierra.addEventListener('click', ataqueTierra)
     
      */
-
-    secuenciaAtaque()
 }
 
 function secuenciaAtaque() {
@@ -279,8 +339,7 @@ function secuenciaAtaque() {
     })
   })
 }
-    seleccionarMascotaEnemigo()
-    
+
     //  1 - por aparicion
 
 function seleccionarMascotaEnemigo() {
@@ -312,9 +371,7 @@ function seleccionarMascotaEnemigo() {
     else {
         spanMascotaEnemigo.innerHTML = 'Raty'
     } 
-
-
-                                     ATAQUES MANUALES 
+      ATAQUES MANUALES 
 function ataqueFuego(){
     ataqueJugador = 'FUEGO'
     ataqueAleatorioEnemigo()
@@ -331,6 +388,7 @@ function ataqueTierra(){
 }   */
 
 function ataqueAleatorioEnemigo() {
+    console.log('Ataques enemigo', ataquesMokeponEnemigo);
     let ataqueAleatorio = aleatorio(0, ataquesMokeponEnemigo.length - 1)
     
     /* Se le está diciendo que al arreglo ataqueAleatorio le de el valor de ataquesMokeponEnemigo, que trae de la función anterior el valor de la mascota aleatoria elegida (en su parte de ataques) y asuma la longitud (la cantidad de objetos y le reste 1 porque empieza en 0) de la variable.  */   
@@ -371,7 +429,7 @@ function combate() {
             crearMensaje('EMPATADOS 🤷‍♂️')
         }
        
-        else if (ataqueJugador[index] === 'TIERRA' && ataqueEnemigo[index] === 'FUEGO') {
+        else if (ataqueJugador[index] === 'FUEGO' && ataqueEnemigo[index] === 'TIERRA') {
         indexAmbosOponentes(index, index)
         crearMensaje('GANASTE 🐱‍🏍')
         victoriasJugador++
@@ -395,7 +453,7 @@ function combate() {
         victoriasEnemigo++
         spanVictoriasEnemigo.innerHTML = victoriasEnemigo
     }
-    }
+  }
     revisarVictorias()
 }
 
@@ -404,10 +462,10 @@ function revisarVictorias() {
         crearMensajeFinal('QUEDARON EMPATADOS 🤷‍♂️')
     }
       else if (victoriasJugador > victoriasEnemigo) {
-        crearMensajeFinal(" ¡FELICITACIONES!.. GANASTE 🤗")
+        crearMensajeFinal(' ¡FELICITACIONES!.. GANASTE 🤗')
     }
       else {
-        crearMensajeFinal(" LO SIENTO... PERDISTE 😌")
+        crearMensajeFinal(' LO SIENTO... PERDISTE 😌')
     }   
 }
 
@@ -446,10 +504,10 @@ function crearMensajeFinal(resultadoFinal) {
 }
 
 function reiniciarJuego() {   
-    
+    /*
     document.getElementById('Hipo').checked = false;
     document.getElementById('Capy').checked = false;
-    document.getElementById('Raty').checked = false;  
+    document.getElementById('Raty').checked = false;  */
     location.reload()
 }
 /* LOCATION se refiere a la ubicacion (direccion) donde estamos y la propiedad RELOAD lo que hace es recargar la página y recomenzar el juego */
@@ -507,15 +565,23 @@ function pintarAmbiente() {
         mapa.width,
         mapa.height
     )
+    mascotaJugadorObjeto.pintarMokepon()
 
-    lienzo.drawImage(
-        // mostrar la mascota en el canvas
-        mascotaJugadorObjeto.mapaFoto,
-        mascotaJugadorObjeto.x,
-        mascotaJugadorObjeto.y,
-        mascotaJugadorObjeto.ancho,
-        mascotaJugadorObjeto.alto
-    )
+    /* En mascotaJugadorObjeto está la mascota escogida y ahora la traemos (pintamos) con la función pintarMokepon()  
+
+    Enseguida pintamos la mascota enemiga:
+    */
+    hipoEnemigo.pintarMokepon()
+    capyEnemigo.pintarMokepon()
+    ratyEnemigo.pintarMokepon() 
+
+    /* Aquí se verifica si la mascota se está moviendo - velocidad X y Y diferentes a cero - y se revisa su acercamiento a c/u de las mascotas  */
+
+    if (mascotaJugadorObjeto.velocidadX !== 0 || mascotaJugadorObjeto.velocidadY !== 0) {
+        revisarColision(hipoEnemigo)
+        revisarColision(capyEnemigo)
+        revisarColision(ratyEnemigo)
+    }
 }
 
 function moverDerecha() {
@@ -562,11 +628,13 @@ function teclaPresionada(event) {  // nos trae qué tecla se presionó
 /* SWITCH es igual a hacer varios if seguidos, se da lo que se va a comparar (event.key - informacion que viene del  window.addEventListener(keydown, teclaPresionada) nos trae qué tecla se presionó y la compara con cada caso, si es igual, el break termina la comparación, si no, sigue comparando, al final, si no se ha igualado ningun caso, viene el default, que en este ejemplo, no hace nada.  */
 
 function iniciarMapa() {
+
+    /* Se utilizan cuando tenemos un tamaño fijo de pantalla 
     mapa.width = 1000   //Tamaño del canvas
-    mapa.height = 400
+    mapa.height = 400   */
 
     mascotaJugadorObjeto = obtenerObjetoMascota(mascotaJugador)
-
+    console.log(mascotaJugadorObjeto, mascotaJugador);
     intervalo = setInterval(pintarAmbiente, 50) // va limpiando las posiciones anteriores
     // Llama una función (pintarAmbiente) cada cierto tiempo (50 milisegundos)
  
@@ -581,10 +649,39 @@ function obtenerObjetoMascota() {
         }
     }
 }
-
 /* En este ciclo (for):
       Se recorre el arreglo mascotas buscando la que coincida con la seleccionada (en mascotaJugador) y regresamos ese objeto completo  en mascotas[i]
         */
+
+function revisarColision(enemigo) {
+    const arribaEnemigo = enemigo.y
+    const abajoEnemigo = enemigo.y + enemigo.alto
+    const derechaEnemigo = enemigo.x + enemigo.ancho
+    const izquierdaEnemigo = enemigo.x
+
+    const arribaMascota = mascotaJugadorObjeto.y
+    const abajoMascota = mascotaJugadorObjeto.y + mascotaJugadorObjeto.alto
+    const derechaMascota = mascotaJugadorObjeto.x + mascotaJugadorObjeto.ancho
+    const izquierdaMascota = mascotaJugadorObjeto.x
+
+    if (
+        /* Si se cumple alguna de estas opciones, el programa sigue, sino, HAY COLISIÓN, la mascota se para, desaparece el mapa (ambiente) y aparece la opción para escoger el ataque */
+
+        abajoMascota < arribaEnemigo ||
+        arribaMascota > abajoEnemigo ||
+        derechaMascota < izquierdaEnemigo ||
+        izquierdaMascota > derechaEnemigo 
+    ) {
+        return
+    }
+    detenerMovimiento()
+    clearInterval(intervalo)
+    sectionSeleccionarAtaque.style.display = 'flex'
+    sectionVerMapa.style.display = 'none'
+    seleccionarMascotaEnemigo(enemigo)
+    // alert('Hay colisión con ' + enemigo.nombre)
+}
+
 
 window.addEventListener('load', iniciarJuego)
 

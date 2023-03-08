@@ -33,7 +33,7 @@ body {
 .titulo {
 	/* width: 380px;
 	height: 80px;
-	padding: 10px;
+	padding: 5px;
 	border-radius: 15px;
 	border-style: solid;
 	border-color: darkgoldenrod;
@@ -62,7 +62,7 @@ body {
 	border: 2px solid red;
 	background-color: lightgray;
 	box-sizing: border-box;
-	margin: 30px; 
+	margin: 10px; 
 	font-family: fantasy;
 	display: flex;
 	align-items: center;
@@ -72,6 +72,8 @@ body {
 
 .tarjeta-de-mokepon img {
 	width: 40px;
+	border-radius: 10px;
+	border: 2px solid black;
 } 
 
 #boton-mascota {
@@ -104,7 +106,7 @@ input:checked + label {
 	border-radius: 10px;
 	border: 2px solid red;
 	box-sizing: border-box;
-	width: 80px;
+	width: 60px;
 	height: 40px;
 	font-family: 'Fredoka One', cursive;
 	cursor: pointer;
@@ -154,11 +156,32 @@ input:checked + label {
 	border: 2px solid white;
 }
 
+#ver-mapa button {
+	width: 100px;
+	height: 30px;
+	border-radius: 20px;
+	background-color: khaki;
+	border: 2px solid red;
+	color: black;
+	font-family: 'Fredoka One', cursive;
+	cursor: pointer;
+	margin: 10px 0;
+	/* arriba y abajo 10px - a los lados 0px */
+}
+
 @media (max-width: 360px) {
 	.tarjetas, .tarjetas-ataques{
 		flex-direction: column;
 	}
 }
-/* Esta instrucción es para cuando se ve en dispositivos de pantalla pequeña como celulares, se le dice que cuando el dispositivo tenga de 0 a 360 px, haga el cambio que se le dice, se coloca SÓLO lo que debe cambiar, en este caso, que las mascotas se organien vertical */
+
+@media (max-width: 300px) {
+	#ver-mapa div {
+		display:list-item flex;
+		align-items: center;
+		flex-direction: column;
+	}
+}
+/* @media  Esta instrucción es para cuando se ve en dispositivos de pantalla pequeña como celulares, se le dice que cuando el dispositivo tenga de 0 a 360 px, haga el cambio que se le dice, se coloca SÓLO lo que debe cambiar, en este caso, que las mascotas se organicen vertical al igual que los botones para mover la mascota */
 
 	
